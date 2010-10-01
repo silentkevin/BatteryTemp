@@ -1,7 +1,9 @@
 package org.sksi.batterytemp;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,17 +30,31 @@ public class BatteryTemp extends Activity {
         this.footerView.setText( "Love, Kevin" );
         this.batteryLevel();
     }
+	
+    
+    private void showNotification( int level, float temp, float voltage, String strHealth, String strStatus ) {
+		NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
+	    Intent intent = new Intent( this, BatteryTemp.class );
 
+	    Notification notification = new Notification( R.drawable.batterylevel, "Battery Level:  " + level, System.currentTimeMillis() );
+	    notification.iconLevel = level;
+
+	    Context context = getApplicationContext();
+	    CharSequence contentTitle = "Poop";
+	    CharSequence contentText = "Butty";
+	    Intent notificationIntent = new Intent( this, BatteryTemp.class );
+	    PendingIntent contentIntent = PendingIntent.getActivity( this, 0, notificationIntent, 0 );
+
+	    notification.setLatestEventInfo( context, contentTitle, contentText, contentIntent );
+
+	    nm.notify( BATTERYLEVEL_NOTIFICATION_ID, notification );
+		
+	}
+	
+	
     private void batteryLevel() {
         BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
-        	private void showNotification( int level, float temp, float voltage, String strHealth, String strStatus ) {
-        		NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
-
-        		
-        	}
-        	
             public void onReceive(Context context, Intent intent) {
-//                context.unregisterReceiver(this);
             	String outStr = "";
             	outStr += "\n";
                 int rawlevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
@@ -89,7 +105,7 @@ public class BatteryTemp extends Activity {
 
                 batteryInfoView.setText( outStr );
 
-                this.showNotification( level, temp, voltage, strStatus, strHealth );
+                showNotification( level, temp, voltage, strStatus, strHealth );
             }
         };
         IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -100,4 +116,6 @@ public class BatteryTemp extends Activity {
     TextView headerView;
     TextView batteryInfoView;
     TextView footerView;
+    
+    private final static int BATTERYLEVEL_NOTIFICATION_ID = 1;
 }
