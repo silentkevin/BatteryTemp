@@ -99,5 +99,4 @@
     <item android:maxLevel="97" android:drawable="@drawable/batt097"/>
     <item android:maxLevel="98" android:drawable="@drawable/batt098"/>
     <item android:maxLevel="99" android:drawable="@drawable/batt099"/>
-    <item android:maxLevel="100" android:drawable="@drawable/batt100"/>
 </level-list>

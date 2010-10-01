@@ -111,12 +111,12 @@ public final class R {
         public static final int batt097=0x7f020061;
         public static final int batt098=0x7f020062;
         public static final int batt099=0x7f020063;
-        public static final int batt100=0x7f020064;
-        public static final int batterylevel=0x7f020065;
-        public static final int icon=0x7f020066;
+        public static final int batterylevel=0x7f020064;
+        public static final int icon=0x7f020065;
     }
     public static final class id {
         public static final int batteryLevel=0x7f050001;
+        public static final int button=0x7f050003;
         public static final int footer=0x7f050002;
         public static final int header=0x7f050000;
     }

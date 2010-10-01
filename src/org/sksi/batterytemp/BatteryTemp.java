@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class BatteryTemp extends Activity {
@@ -34,24 +35,33 @@ public class BatteryTemp extends Activity {
     
     private void showNotification( int level, float temp, float voltage, String strHealth, String strStatus ) {
 		NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
-	    Intent intent = new Intent( this, BatteryTemp.class );
 
 	    Notification notification = new Notification( R.drawable.batterylevel, "Battery Level:  " + level, System.currentTimeMillis() );
 	    notification.iconLevel = level;
 
 	    Context context = getApplicationContext();
-	    CharSequence contentTitle = "Poop";
-	    CharSequence contentText = "Butty";
+	    CharSequence contentTitle = "Level: " + level + "%, Temp: " + temp + "°C";
+	    CharSequence contentText = "Voltage: " + voltage + "V, " + strHealth + ", " + strStatus;
 	    Intent notificationIntent = new Intent( this, BatteryTemp.class );
 	    PendingIntent contentIntent = PendingIntent.getActivity( this, 0, notificationIntent, 0 );
 
+	    notification.iconLevel = (int)temp;
+	    notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+
 	    notification.setLatestEventInfo( context, contentTitle, contentText, contentIntent );
 
+	    nm.cancel( BATTERYLEVEL_NOTIFICATION_ID );
 	    nm.notify( BATTERYLEVEL_NOTIFICATION_ID, notification );
 		
 	}
 	
 	
+    public void exit( View view ) {
+		NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
+		nm.cancelAll();
+    	this.finish();
+    }
+    
     private void batteryLevel() {
         BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
@@ -105,7 +115,7 @@ public class BatteryTemp extends Activity {
 
                 batteryInfoView.setText( outStr );
 
-                showNotification( level, temp, voltage, strStatus, strHealth );
+                showNotification( level, temp, voltage, strHealth, strStatus );
             }
         };
         IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
