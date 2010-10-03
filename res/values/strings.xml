@@ -2,4 +2,5 @@
 <resources>
     <string name="exit">Exit</string>
     <string name="app_name">BatteryTemp</string>
+<string name="switchColor">Change Notification Color</string>
 </resources>

@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,10 @@ public class BatteryTemp extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        // Restore preferences
+        this.settings = this.getPreferences( Activity.MODE_PRIVATE );
+        this.tempForegroundWhite = this.settings.getBoolean( "tempForegroundWhite", true );
 
         this.headerView = (TextView) this.findViewById(R.id.header);
         this.batteryInfoView = (TextView) this.findViewById(R.id.batteryLevel);
@@ -32,41 +37,71 @@ public class BatteryTemp extends Activity {
         this.batteryLevel();
     }
 	
-    
-    private void showNotification( int level, float temp, float voltage, String strHealth, String strStatus ) {
-		NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
 
-	    Notification notification = new Notification( R.drawable.batterylevel, "Battery Level:  " + level, System.currentTimeMillis() );
-	    notification.iconLevel = level;
-
-	    Context context = getApplicationContext();
-	    CharSequence contentTitle = "Level: " + level + "%, Temp: " + temp + "°C";
-	    CharSequence contentText = "Voltage: " + voltage + "V, " + strHealth + ", " + strStatus;
-	    Intent notificationIntent = new Intent( this, BatteryTemp.class );
-	    PendingIntent contentIntent = PendingIntent.getActivity( this, 0, notificationIntent, 0 );
-
-	    notification.iconLevel = (int)temp;
-	    notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-
-	    notification.setLatestEventInfo( context, contentTitle, contentText, contentIntent );
-
-	    nm.cancel( BATTERYLEVEL_NOTIFICATION_ID );
-	    nm.notify( BATTERYLEVEL_NOTIFICATION_ID, notification );
-		
-	}
-	
-	
-    public void exit( View view ) {
-		NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
-		nm.cancelAll();
-    	this.finish();
+    private void showNotification() {
+        this.showNotification( this.lastLevel, this.lastTemp, this.lastVoltage, this.lastStrHealth, this.lastStrStatus );
     }
-    
+
+
+    private void showNotification( int level, float temp, float voltage, String strHealth, String strStatus ) {
+        NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
+        
+        int icon = R.drawable.batterylevel_black;
+        if( this.tempForegroundWhite ) {
+            icon = R.drawable.batterylevel_white;
+        }
+        Notification notification = new Notification( icon, "Battery Level:  " + level, System.currentTimeMillis() );
+        notification.iconLevel = level;
+
+        Context context = getApplicationContext();
+        CharSequence contentTitle = "Level: " + level + "%, Temp: " + temp + "°C";
+        CharSequence contentText = "Voltage: " + voltage + "V, " + strHealth + ", " + strStatus;
+        Intent notificationIntent = new Intent( this, BatteryTemp.class );
+        PendingIntent contentIntent = PendingIntent.getActivity( this, 0, notificationIntent, 0 );
+
+        notification.iconLevel = (int)temp;
+        notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+
+        notification.setLatestEventInfo( context, contentTitle, contentText, contentIntent );
+
+        nm.cancel( BATTERYTEMP_NOTIFICATION_ID );
+        nm.notify( BATTERYTEMP_NOTIFICATION_ID, notification );
+
+        this.lastLevel = level;
+        this.lastTemp = temp;
+        this.lastVoltage = voltage;
+        this.lastStrHealth = strHealth;
+        this.lastStrStatus = strStatus;
+    }
+
+
+    public void switchColor( View view ) {
+        NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
+        nm.cancelAll();
+        if( this.tempForegroundWhite ) {
+        	this.tempForegroundWhite = false;
+        } else {
+        	this.tempForegroundWhite = true;
+        }
+        SharedPreferences.Editor editor = this.settings.edit();
+        editor.putBoolean( "tempForegroundWhite", this.tempForegroundWhite );
+        editor.commit();
+        this.showNotification();
+    }
+
+
+    public void exit( View view ) {
+        NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
+        nm.cancelAll();
+        this.finish();
+    }
+
+
     private void batteryLevel() {
         BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
-            	String outStr = "";
-            	outStr += "\n";
+                String outStr = "";
+                outStr += "\n";
                 int rawlevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                 int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
                 int level = -1;
@@ -84,32 +119,32 @@ public class BatteryTemp extends Activity {
                 int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, BatteryManager.BATTERY_STATUS_UNKNOWN);
                 String strStatus;
                 if (status == BatteryManager.BATTERY_STATUS_CHARGING){
-                	strStatus = "Charging";
+                    strStatus = "Charging";
                 } else if (status == BatteryManager.BATTERY_STATUS_DISCHARGING){
-                	strStatus = "Dis-charging";
+                    strStatus = "Dis-charging";
                 } else if (status == BatteryManager.BATTERY_STATUS_NOT_CHARGING){
-                	strStatus = "Not charging";
+                    strStatus = "Not charging";
                 } else if (status == BatteryManager.BATTERY_STATUS_FULL){
-                	strStatus = "Full";
+                    strStatus = "Full";
                 } else {
-                	strStatus = "Unknown";
+                    strStatus = "Unknown";
                 }
                 outStr += "Battery Status:  " + strStatus + "\n";
 
                 int health = intent.getIntExtra( BatteryManager.EXTRA_HEALTH, -1 );
                 String strHealth;
                 if (health == BatteryManager.BATTERY_HEALTH_GOOD) {
-                	strHealth = "Good";
+                    strHealth = "Good";
                 } else if (health == BatteryManager.BATTERY_HEALTH_OVERHEAT) {
-                	strHealth = "Over Heat";
+                    strHealth = "Over Heat";
                 } else if (health == BatteryManager.BATTERY_HEALTH_DEAD) {
-                	strHealth = "Dead";
+                    strHealth = "Dead";
                 } else if (health == BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE) {
-                	strHealth = "Over Voltage";
+                    strHealth = "Over Voltage";
                 } else if (health == BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE) {
-                	strHealth = "Unspecified Failure";
+                    strHealth = "Unspecified Failure";
                 } else {
-                	strHealth = "Unknown";
+                    strHealth = "Unknown";
                 }
                 outStr += "Battery Health:  " + strHealth + "\n";
 
@@ -126,6 +161,15 @@ public class BatteryTemp extends Activity {
     TextView headerView;
     TextView batteryInfoView;
     TextView footerView;
+
+    int lastLevel;
+    float lastTemp;
+    float lastVoltage;
+    String lastStrHealth;
+    String lastStrStatus;
+
+    SharedPreferences settings;
+    Boolean tempForegroundWhite;
     
-    private final static int BATTERYLEVEL_NOTIFICATION_ID = 1;
+    private final static int BATTERYTEMP_NOTIFICATION_ID = 1;
 }
