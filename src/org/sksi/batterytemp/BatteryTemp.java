@@ -17,9 +17,9 @@ import android.widget.TextView;
 public class BatteryTemp extends Activity {
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    public void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.main );
 
         // Restore preferences
         this.settings = this.getPreferences( Activity.MODE_PRIVATE );
@@ -36,7 +36,7 @@ public class BatteryTemp extends Activity {
         this.footerView.setText( "Love, Kevin" );
         this.batteryLevel();
     }
-	
+
 
     private void showNotification() {
         this.showNotification( this.lastLevel, this.lastTemp, this.lastVoltage, this.lastStrHealth, this.lastStrStatus );
@@ -173,3 +173,4 @@ public class BatteryTemp extends Activity {
     
     private final static int BATTERYTEMP_NOTIFICATION_ID = 1;
 }
+
