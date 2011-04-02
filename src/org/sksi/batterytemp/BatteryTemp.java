@@ -97,6 +97,11 @@ public class BatteryTemp extends Activity {
     }
 
 
+    public void close( View view ) {
+        // TODO
+    }
+
+
     private void batteryLevel() {
         BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
