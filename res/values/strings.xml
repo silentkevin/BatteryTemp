@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="exit">Exit</string>
+    <string name="exit">Exit and Kill Notification</string>
     <string name="app_name">BatteryTemp</string>
 <string name="switchColor">Change Notification Color</string>
+<string name="close">Close</string>
+<string name="startOnBoot">Start on Boot</string>
 </resources>
