@@ -29,7 +29,7 @@ public class BootReceiver extends BroadcastReceiver {
                 Log.i( LOGTAG, "Not starting monitor service on bootup because we are not supposed to." );
             }
         } else {
-            Log.e( LOGTAG, "Received unexpected intent " + intent.toString() );   
+            Log.e( LOGTAG, "Received unexpected intent " + intent.toString() );
         }
     }
 
