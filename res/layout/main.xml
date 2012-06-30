@@ -13,8 +13,9 @@
             android:id = "@+id/header"
             android:layout_width = "fill_parent"
             android:layout_height = "wrap_content"
-            android:gravity = "center_vertical|center_horizontal">
-        </TextView>
+            android:gravity = "center_vertical|center_horizontal"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id = "@+id/batteryLevel"
@@ -27,6 +28,7 @@
             android:id = "@+id/footer"
             android:layout_width = "fill_parent"
             android:layout_height = "wrap_content"
+            android:visibility="gone"
             android:gravity = "bottom|center_horizontal">
         </TextView>
 
