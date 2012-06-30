@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.sksi.batterytemp"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".BatteryTemp"
-                  android:label="@string/app_name">
+<manifest xmlns:android = "http://schemas.android.com/apk/res/android"
+    package = "org.sksi.batterytemp"
+    android:versionCode = "1"
+    android:versionName = "1.0">
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application android:icon = "@drawable/icon"
+        android:label = "@string/app_name">
+        <activity android:name = ".BatteryTemp"
+            android:label = "@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name = "android.intent.action.MAIN" />
+                <category android:name = "android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name="org.sksi.batterytemp.MonitorService"/>
+        <service android:name = "org.sksi.batterytemp.MonitorService" />
 
-        <receiver android:name="org.sksi.batterytemp.BootReceiver" 
-                  android:enabled="true" 
-                  android:exported="false"
-                  android:label="BootReceiver">
+        <receiver android:name = "org.sksi.batterytemp.BootReceiver"
+            android:enabled = "true"
+            android:exported = "false"
+            android:label = "BootReceiver"
+            >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name = "android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name = ".MusicReceiver"
+            android:enabled = "true"
+            android:exported = "false"
+            android:label = "MusicReceiver"
+            >
+            <intent-filter>
+                <action android:name = "com.android.music.metachanged" />
             </intent-filter>
         </receiver>
 
     </application>
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion = "8" />
 
-</manifest> 
+</manifest>
