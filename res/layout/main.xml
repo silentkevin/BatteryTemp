@@ -1,48 +1,78 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android" 
-    android:orientation="vertical" 
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent"> 
-    
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:gravity="center_vertical|center_horizontal">
-    </TextView>
-    
-    <TextView
-        android:id="@+id/batteryLevel"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:gravity="center_vertical|center_horizontal">
-    </TextView>
-    
-    <TextView
-        android:id="@+id/footer"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:gravity="bottom|center_horizontal">
-    </TextView>
-    <CheckBox android:text="@string/startOnBoot" android:id="@+id/startOnBootCheckbox" android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent">
 
-    <Button android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/switchColor"
-            android:onClick="switchColor" />
+    <LinearLayout
+        android:orientation = "vertical"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content">
 
-    <Button android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exit"
-            android:onClick="exit" />
+        <TextView
+            android:id = "@+id/header"
+            android:layout_width = "fill_parent"
+            android:layout_height = "wrap_content"
+            android:gravity = "center_vertical|center_horizontal">
+        </TextView>
 
-    <Button android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/close"
-            android:onClick="close" />
+        <TextView
+            android:id = "@+id/batteryLevel"
+            android:layout_width = "fill_parent"
+            android:layout_height = "wrap_content"
+            android:gravity = "center_vertical|center_horizontal">
+        </TextView>
 
-</LinearLayout>
+        <TextView
+            android:id = "@+id/footer"
+            android:layout_width = "fill_parent"
+            android:layout_height = "wrap_content"
+            android:gravity = "bottom|center_horizontal">
+        </TextView>
+
+        <CheckBox
+            android:text = "@string/startOnBoot"
+            android:id = "@+id/startOnBootCheckbox"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_margin = "5dip"
+            />
+
+        <CheckBox
+            android:text = "@string/showBatteryTemperatureNotification"
+            android:id = "@+id/showBatteryTemperatureNotificationCheckbox"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_margin = "5dip"
+            />
+
+        <CheckBox
+            android:text = "@string/showToastOnMusicChangeTrack"
+            android:id = "@+id/showToastOnMusicChangeTrackCheckbox"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_margin = "5dip"
+            />
+
+        <CheckBox
+            android:text = "@string/showToastOnMusicPlay"
+            android:id = "@+id/showToastOnMusicPlayCheckbox"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_margin = "5dip"
+            />
+
+        <Button android:id = "@+id/button"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text = "@string/switchColor"
+            android:onClick = "switchColor" />
+
+        <Button android:id = "@+id/button"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text = "@string/exit"
+            android:onClick = "exit" />
+
+    </LinearLayout>
+</ScrollView>

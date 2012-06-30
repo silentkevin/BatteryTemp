@@ -13,19 +13,10 @@
 
 package org.sksi.batterytemp;
 
-import java.util.TimerTask;
-
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -36,23 +27,53 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class BatteryTemp extends Activity {
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.main );
 
+        this.settings = this.getSharedPreferences( "BatteryTemp", Activity.MODE_PRIVATE );
 
-        this.headerView = (TextView) this.findViewById(R.id.header);
-        this.batteryInfoView = (TextView) this.findViewById(R.id.batteryLevel);
-        this.footerView = (TextView) this.findViewById(R.id.footer);
+        this.headerView = (TextView)this.findViewById( R.id.header );
+        this.batteryInfoView = (TextView)this.findViewById( R.id.batteryLevel );
+        this.footerView = (TextView)this.findViewById( R.id.footer );
+
         this.startOnBootCheckbox = (CheckBox)this.findViewById( R.id.startOnBootCheckbox );
         this.startOnBootCheckbox.setEnabled( false );
         this.startOnBootCheckbox.setOnCheckedChangeListener( new OnCheckedChangeListener() {
             public void onCheckedChanged( CompoundButton buttonView, boolean isChecked ) {
                 MonitorService.getInstance().setStartOnBoot( isChecked );
             }
-        });
+        } );
+
+        this.showBatteryTemperatureNotificationCheckbox = (CheckBox)this.findViewById( R.id.showBatteryTemperatureNotificationCheckbox );
+        this.showBatteryTemperatureNotificationCheckbox.setEnabled( false );
+        this.showBatteryTemperatureNotificationCheckbox.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked ) {
+                MonitorService.getInstance().setShowBatteryTemperatureNotification( isChecked );
+            }
+        } );
+
+        this.showToastOnMusicChangeTrackCheckbox = (CheckBox)this.findViewById( R.id.showToastOnMusicChangeTrackCheckbox );
+        this.showToastOnMusicChangeTrackCheckbox.setEnabled( false );
+        this.showToastOnMusicChangeTrackCheckbox.setChecked( this.settings.getBoolean( "showToastOnMusicChangeTrack", true ) );
+        this.showToastOnMusicChangeTrackCheckbox.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked ) {
+                changeBooleanSetting( "showToastOnMusicChangeTrack", isChecked );
+            }
+        } );
+
+        this.showToastOnMusicPlayCheckbox = (CheckBox)this.findViewById( R.id.showToastOnMusicPlayCheckbox );
+        this.showToastOnMusicPlayCheckbox.setEnabled( false );
+        this.showToastOnMusicPlayCheckbox.setChecked( this.settings.getBoolean( "showToastOnMusicPlay", true ) );
+        this.showToastOnMusicPlayCheckbox.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked ) {
+                changeBooleanSetting( "showToastOnMusicPlay", isChecked );
+            }
+        } );
 
         this.headerView.setText( "Hello dearest Karen, who didn't believe I had put an app of my own on my phone." );
 
@@ -72,24 +93,28 @@ public class BatteryTemp extends Activity {
         }
     }
 
+    protected void changeBooleanSetting( String settingName, Boolean settingValue ) {
+        SharedPreferences.Editor editor = this.settings.edit();
+        editor.putBoolean( settingName, settingValue );
+        editor.commit();
+    }
 
     private Runnable DeferredRegisterCallback = new Runnable() {
         public void run() {
             MonitorService.getInstance().registerCallback( new CallbackReceiver() );
             MonitorService.getInstance().startNotifications();
             startOnBootCheckbox.setEnabled( true );
-            if( MonitorService.getInstance().getStartOnBoot() ) {
-                startOnBootCheckbox.setChecked( true );
-            } else {
-                startOnBootCheckbox.setChecked( false );
-            }
+            startOnBootCheckbox.setChecked( MonitorService.getInstance().getStartOnBoot() );
+            showBatteryTemperatureNotificationCheckbox.setEnabled( true );
+            showBatteryTemperatureNotificationCheckbox.setChecked( MonitorService.getInstance().getShowBatteryTemperatureNotification() );
+            showToastOnMusicChangeTrackCheckbox.setEnabled( true );
+            showToastOnMusicPlayCheckbox.setEnabled( true );
         }
-     };
+    };
 
 
     private class CallbackReceiver implements MonitorService.MonitorServiceCallbackReceiver {
-        public void receiveBatteryInfo( int level, float temp, float voltage,
-                String strHealth, String strStatus, String fullInfoStr ) {
+        public void receiveBatteryInfo( int level, float temp, float voltage, String strHealth, String strStatus, String fullInfoStr ) {
             batteryInfoView.setText( fullInfoStr );
         }
     }
@@ -119,7 +144,13 @@ public class BatteryTemp extends Activity {
     TextView headerView;
     TextView batteryInfoView;
     TextView footerView;
+
     CheckBox startOnBootCheckbox;
+    CheckBox showBatteryTemperatureNotificationCheckbox;
+    CheckBox showToastOnMusicChangeTrackCheckbox;
+    CheckBox showToastOnMusicPlayCheckbox;
+
+    SharedPreferences settings;
 
     private static final String LOGTAG = "BatteryTemp";
 

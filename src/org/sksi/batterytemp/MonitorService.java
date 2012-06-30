@@ -56,6 +56,7 @@ public class MonitorService extends Service {
         this.settings = this.getSharedPreferences( "BatteryTemp", Activity.MODE_PRIVATE );
         this.tempForegroundWhite = this.settings.getBoolean( "tempForegroundWhite", true );
         this.startOnBoot = this.settings.getBoolean( "startOnBoot", true );
+        this.showBatteryTemperatureNotification = this.settings.getBoolean( "showBatteryTemperatureNotification", true );
 
         this.init();
         return;
@@ -69,7 +70,7 @@ public class MonitorService extends Service {
 
     private void showNotification( int level, float temp, float voltage, String strHealth, String strStatus, String fullOutStr ) {
         NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
-        
+
         int icon = R.drawable.batterylevel_black;
         if( this.tempForegroundWhite ) {
             icon = R.drawable.batterylevel_white;
@@ -89,7 +90,9 @@ public class MonitorService extends Service {
         notification.setLatestEventInfo( context, contentTitle, contentText, contentIntent );
 
         nm.cancel( BATTERYTEMP_NOTIFICATION_ID );
-        nm.notify( BATTERYTEMP_NOTIFICATION_ID, notification );
+        if( this.showBatteryTemperatureNotification ) {
+            nm.notify( BATTERYTEMP_NOTIFICATION_ID, notification );
+        }
 
         this.lastLevel = level;
         this.lastTemp = temp;
@@ -133,6 +136,16 @@ public class MonitorService extends Service {
         editor.putBoolean( "startOnBoot", this.startOnBoot );
         editor.commit();
         Log.i( LOGTAG, "Setting start on boot to:  " + this.startOnBoot );
+    }
+
+
+    public void setShowBatteryTemperatureNotification( boolean s ) {
+        this.showBatteryTemperatureNotification = s;
+        SharedPreferences.Editor editor = this.settings.edit();
+        editor.putBoolean( "showBatteryTemperatureNotification", this.showBatteryTemperatureNotification );
+        editor.commit();
+        Log.i( LOGTAG, "Setting showBatteryTemperatureNotification to:  " + this.showBatteryTemperatureNotification );
+        this.showNotification();
     }
 
 
@@ -220,6 +233,12 @@ public class MonitorService extends Service {
     SharedPreferences settings;
     Boolean tempForegroundWhite;
     Boolean startOnBoot;
+
+    public Boolean getShowBatteryTemperatureNotification() {
+        return showBatteryTemperatureNotification;
+    }
+
+    Boolean showBatteryTemperatureNotification;
 
     private final static int BATTERYTEMP_NOTIFICATION_ID = 1;
     private static MonitorService instance = null;

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="exit">Exit and Kill Notification</string>
-    <string name="app_name">BatteryTemp</string>
-<string name="switchColor">Change Notification Color</string>
-<string name="close">Close</string>
-<string name="startOnBoot">Start on Boot</string>
+    <string name = "exit">Exit and Kill Notification</string>
+    <string name = "app_name">BatteryTemp</string>
+    <string name = "switchColor">Change Notification Color</string>
+    <string name = "close">Close</string>
+    <string name = "startOnBoot">Start on boot</string>
+    <string name = "showBatteryTemperatureNotification">Show battery temperature notification</string>
+    <string name = "showToastOnMusicChangeTrack">Show toast when music changes track</string>
+    <string name = "showToastOnMusicPlay">Show toast when music starts playing</string>
 </resources>
