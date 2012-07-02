@@ -1,0 +1,11 @@
+CHANGELOG
+
+* Version 0.0.0.2:
+
+** Fixed handling of playing state hopefully
+** Should work with cyanogenmod Apollo music player
+
+* Version 0.0.0.1:
+
+** Initial public release in all its unfinished glory
+** If anyone actually looks at the code please be kind to me, this was my first Android project and one of my first Java projects

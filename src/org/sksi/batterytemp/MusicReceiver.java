@@ -20,6 +20,7 @@ public class MusicReceiver extends BroadcastReceiver {
         SharedPreferences settings = context.getSharedPreferences( "BatteryTemp", Activity.MODE_PRIVATE );
         Boolean showToastOnMusicChangeTrack = settings.getBoolean( "showToastOnMusicChangeTrack", true );
         Boolean showToastOnMusicPlay = settings.getBoolean( "showToastOnMusicPlay", true );
+        Boolean showToastOnMusicComplete = settings.getBoolean( "showToastOnMusicComplete", true );
 
         String artistName = intent.getExtras().getString( "artist" );
         artistName = artistName != null ? artistName : "Unknown Artist";
@@ -30,22 +31,26 @@ public class MusicReceiver extends BroadcastReceiver {
         String albumName = intent.getExtras().getString( "album" );
         albumName = albumName != null ? albumName : "Unknown Album";
 
-        Boolean isPlaying = intent.getExtras().getBoolean( "isPlaying" );
+        Boolean isPlaying = intent.getExtras().getBoolean( "playing" );
 
         String msg = String.format( "Now playing %s by %s from %s", trackName, artistName, albumName );
 
         Log.i( LOGTAG, "Intent received is " + intent.getAction() );
         Log.i( LOGTAG, "msg is " + msg );
         Log.i( LOGTAG, "isPlaying is " + isPlaying );
-        Log.i( LOGTAG, "extras is " + intent.getExtras().toString() );
 
-        isPlaying = true; // Seems to always be false, pain in the ass
+        Boolean isMetaIntent = intent.getAction().contains( "metachanged" );
+        Boolean isPlayStateChangedIntent = intent.getAction().contains( "playstatechanged" );
+        Boolean isPlaybackCompleteIntent = intent.getAction().contains( "playbackcomplete" );
 
-        if( ( intent.getAction().equals( "com.android.music.metachanged" ) && showToastOnMusicChangeTrack )
-            || ( intent.getAction().equals( "com.android.music.playstatechanged" ) && isPlaying && showToastOnMusicPlay )
+        if( ( isMetaIntent && showToastOnMusicChangeTrack )
+            || ( isPlayStateChangedIntent && isPlaying && showToastOnMusicPlay )
         ) {
             Toast.makeText( context, msg, Toast.LENGTH_LONG ).show();
+        } else if( isPlaybackCompleteIntent && showToastOnMusicComplete ) {
+            Toast.makeText( context, "Music playback is complete", Toast.LENGTH_LONG ).show();
         }
+
     }
 
     protected static final String LOGTAG = "BATTERYTEMP_" + MusicReceiver.class.getSimpleName();
