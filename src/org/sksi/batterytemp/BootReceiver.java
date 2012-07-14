@@ -26,6 +26,10 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive( Context context, Intent intent ) {
         // just make sure we are getting the right intent (better safe than sorry)
+        if( intent == null ) {
+            Log.e( LOGTAG, "Received a null intent." );
+            return;
+        }
         if( "android.intent.action.BOOT_COMPLETED".equals( intent.getAction() ) ) {
             SharedPreferences settings = context.getSharedPreferences( "BatteryTemp", Activity.MODE_PRIVATE );
             boolean startOnBoot = settings.getBoolean( "startOnBoot", true );
@@ -46,6 +50,6 @@ public class BootReceiver extends BroadcastReceiver {
         }
     }
 
-    static String LOGTAG = "BootReceiver";
+    protected static final String LOGTAG = "BATTERYTEMP_" + BootReceiver.class.getSimpleName();
 
 }

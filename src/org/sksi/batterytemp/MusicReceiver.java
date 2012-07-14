@@ -17,6 +17,11 @@ public class MusicReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive( Context context, Intent intent ) {
+        if( intent == null ) {
+            Log.e( LOGTAG, "Received a null intent" );
+            return;
+        }
+
         SharedPreferences settings = context.getSharedPreferences( "BatteryTemp", Activity.MODE_PRIVATE );
         Boolean showToastOnMusicChangeTrack = settings.getBoolean( "showToastOnMusicChangeTrack", true );
         Boolean showToastOnMusicPlay = settings.getBoolean( "showToastOnMusicPlay", true );

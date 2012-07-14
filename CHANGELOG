@@ -1,5 +1,9 @@
 CHANGELOG
 
+* Version 0.0.0.4:
+
+** Added some checks for null intents
+
 * Version 0.0.0.3:
 
 ** Added boot permission to make it work on ICS

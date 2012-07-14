@@ -219,8 +219,7 @@ public class MonitorService extends Service {
     }
 
 
-    static String LOGTAG = "MonitorService";
-
+    protected static final String LOGTAG = "BATTERYTEMP_" + MonitorService.class.getSimpleName();
 
     int lastLevel;
     float lastTemp;

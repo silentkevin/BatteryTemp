@@ -152,7 +152,7 @@ public class BatteryTemp extends Activity {
 
     SharedPreferences settings;
 
-    private static final String LOGTAG = "BatteryTemp";
+    protected static final String LOGTAG = "BATTERYTEMP_" + BatteryTemp.class.getSimpleName();
 
 }
 
