@@ -1,5 +1,9 @@
 CHANGELOG
 
+* Version 0.0.0.6:
+
+** Adding intent action to toast for debugging purposes
+
 * Version 0.0.0.5:
 
 ** Adding another null check
