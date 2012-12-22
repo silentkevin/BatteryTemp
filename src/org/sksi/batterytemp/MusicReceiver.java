@@ -43,7 +43,7 @@ public class MusicReceiver extends BroadcastReceiver {
 
         Boolean isPlaying = intent.getExtras().getBoolean( "playing" );
 
-        String msg = String.format( "Now playing %s by %s from %s", trackName, artistName, albumName );
+        String msg = String.format( "Now playing %s by %s from %s (%s)", trackName, artistName, albumName, intent.getAction() );
 
         Log.i( LOGTAG, "Intent received is " + intent.getAction() );
         Log.i( LOGTAG, "msg is " + msg );
