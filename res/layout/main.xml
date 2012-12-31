@@ -64,6 +64,12 @@
             android:layout_margin = "5dip"
             />
 
+        <CheckBox
+            android:layout_width = "fill_parent"
+            android:layout_height = "wrap_content"
+            android:text = "@string/respondToMetachanged"
+            android:id = "@+id/respondToMetachangedCheckbox"
+            android:layout_margin = "5dp" />
         <Button android:id = "@+id/button"
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"

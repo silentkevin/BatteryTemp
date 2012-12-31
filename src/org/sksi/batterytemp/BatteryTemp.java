@@ -75,6 +75,15 @@ public class BatteryTemp extends Activity {
             }
         } );
 
+        this.respondToMetachangedCheckbox = (CheckBox)this.findViewById( R.id.respondToMetachangedCheckbox );
+        this.respondToMetachangedCheckbox.setEnabled( false );
+        this.respondToMetachangedCheckbox.setChecked( this.settings.getBoolean( "respondToMetachanged", false ) );
+        this.respondToMetachangedCheckbox.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked ) {
+                changeBooleanSetting( "respondToMetachanged", isChecked );
+            }
+        } );
+
         this.headerView.setText( "Hello dearest Karen, who didn't believe I had put an app of my own on my phone." );
 
         this.batteryInfoView.setText( "Still initting..." );
@@ -108,7 +117,11 @@ public class BatteryTemp extends Activity {
             showBatteryTemperatureNotificationCheckbox.setEnabled( true );
             showBatteryTemperatureNotificationCheckbox.setChecked( MonitorService.getInstance().getShowBatteryTemperatureNotification() );
             showToastOnMusicChangeTrackCheckbox.setEnabled( true );
+            showToastOnMusicChangeTrackCheckbox.setChecked( settings.getBoolean( "showToastOnMusicChangeTrack", true ) );
             showToastOnMusicPlayCheckbox.setEnabled( true );
+            showToastOnMusicPlayCheckbox.setChecked( settings.getBoolean( "showToastOnMusicPlay", true ) );
+            respondToMetachangedCheckbox.setEnabled( true );
+            respondToMetachangedCheckbox.setChecked( settings.getBoolean( "respondToMetachanged", false ) );
         }
     };
 
@@ -149,6 +162,7 @@ public class BatteryTemp extends Activity {
     CheckBox showBatteryTemperatureNotificationCheckbox;
     CheckBox showToastOnMusicChangeTrackCheckbox;
     CheckBox showToastOnMusicPlayCheckbox;
+    CheckBox respondToMetachangedCheckbox;
 
     SharedPreferences settings;
 

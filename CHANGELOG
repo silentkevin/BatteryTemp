@@ -1,5 +1,9 @@
 CHANGELOG
 
+* Version 0.0.0.7:
+
+** Adding pref to respond to metachanged
+
 * Version 0.0.0.6:
 
 ** Adding intent action to toast for debugging purposes

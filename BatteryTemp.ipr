@@ -191,6 +191,13 @@
       </item>
     </group>
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="kebrown4">
+      <words>
+        <w>metachanged</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BatteryTemp.iml" filepath="$PROJECT_DIR$/BatteryTemp.iml" />

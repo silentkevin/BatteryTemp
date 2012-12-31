@@ -31,6 +31,7 @@ public class MusicReceiver extends BroadcastReceiver {
         Boolean showToastOnMusicChangeTrack = settings.getBoolean( "showToastOnMusicChangeTrack", true );
         Boolean showToastOnMusicPlay = settings.getBoolean( "showToastOnMusicPlay", true );
         Boolean showToastOnMusicComplete = settings.getBoolean( "showToastOnMusicComplete", true );
+        Boolean respondToMetachanged = settings.getBoolean( "respondToMetachanged", false );
 
         String artistName = intent.getExtras().getString( "artist" );
         artistName = artistName != null ? artistName : "Unknown Artist";
@@ -53,7 +54,7 @@ public class MusicReceiver extends BroadcastReceiver {
         Boolean isPlayStateChangedIntent = intent.getAction().contains( "playstatechanged" );
         Boolean isPlaybackCompleteIntent = intent.getAction().contains( "playbackcomplete" );
 
-        if( ( isMetaIntent && showToastOnMusicChangeTrack )
+        if( ( isMetaIntent && showToastOnMusicChangeTrack && respondToMetachanged )
             || ( isPlayStateChangedIntent && isPlaying && showToastOnMusicPlay )
         ) {
             Toast.makeText( context, msg, Toast.LENGTH_LONG ).show();

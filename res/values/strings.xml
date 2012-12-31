@@ -8,4 +8,5 @@
     <string name = "showBatteryTemperatureNotification">Show battery temperature notification</string>
     <string name = "showToastOnMusicChangeTrack">Show toast when music changes track</string>
     <string name = "showToastOnMusicPlay">Show toast when music starts playing</string>
+    <string name = "respondToMetachanged">Respond to metachanged intent (Some music players send both metachanged and playstatechanged)</string>
 </resources>
